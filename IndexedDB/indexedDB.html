@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    div {
+      padding: 10px;
+    }
+
+    label {
+      display: block;
+    }
+
+    input,
+    select {
+      display: block;
+      min-width: 200px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Figt Club Characters</h1>
+
+  <div>
+    <label for="txt-ci">C.I.</label>
+    <input type="text" id="txt-ci" placeholder="Character's C.I.">
+    <br>
+    <label for="txt-name">Name</label>
+    <input type="text" id="txt-name" placeholder="Character's name">
+    <br>
+    <label for="txt-lastname">Lastname</label>
+    <input type="text" id="txt-lastname" placeholder="Character's lastname">
+    <br>
+    <label for="sel-gender">Gender</label>
+    <select id="sel-gender">
+      <option value="F">Female</option>
+      <option value="M">Male</option>
+    </select>
+    <br>
+    <label for="txt-email">Email</label>
+    <input type="email" id="txt-email" placeholder="Character's email">
+    <br>
+    <button onclick="add()">Save</button>
+  </div>
+
+  <pre id="output"></pre>
+  <a href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB#Creating_or_updating_the_version_of_the_database"><strong>IndexedDB</strong></a>
+  <script>
+    function out(message) {
+      document.getElementById('output').innerHTML = message;
+    }
+  </script>
+  <script>
+    // Check for availability
+    if (!window.indexedDB)
+      throw new Error("Your browser doesn't support a stable version of IndexedDB. Such feature will not be available.");
+    var db;
+    var request = indexedDB.open("FigtClubCharactesr", 2);
+    request.onerror = function (event) {
+      console.error(event.target);
+    };
+    request.onupgradeneeded = function (event) {
+      db = event.target.result;
+      var objectStore = db.createObjectStore("characters", { keyPath: "ci" });
+      objectStore.createIndex("name", "name", { unique: false });
+      objectStore.createIndex("lastname", "lastname", { unique: false });
+      objectStore.createIndex("email", "email", { unique: true });
+    };
+    function add(character) {
+      if (!character)
+        character = {
+          ci: document.getElementById('txt-ci').value,
+          name: document.getElementById('txt-name').value,
+          lastname: document.getElementById('txt-lastname').value,
+          gender: document.getElementById('sel-gender').value,
+          email: document.getElementById('txt-email').value
+        }
+      var customerObjectStore = request.result.transaction("characters", "readwrite").objectStore("characters");
+      customerObjectStore.add(character);
+    }
+    // setTimeout(function () {
+    //   const characters = [
+    //     { ci: "123.456-1", name: "Tyler", lastname: "Durden", gender: "M", email: "tyler@tfc.com" },
+    //     { ci: "1.234.567-2", name: "Marla", lastname: "Singer", gender: "F", email: "marla@tfc.com" }
+    //   ];
+    //   characters.forEach(function(character){
+    //     add(character);
+    //   })
+    // }, 2000);
+  </script>
+</body>
+
+</html>
