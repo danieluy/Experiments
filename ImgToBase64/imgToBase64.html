@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang='en'>
+
+<head>
+  <meta charset='utf-8'>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Image to base64</title>
+  <link rel="stylesheet" href="http://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
+  <style>
+    .output-txt {
+      word-break: break-all;
+    }
+
+    #output-img {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h1>Image to base64</h1>
+    <div class="input-field col s12">
+      <textarea id="txta-preview" class="materialize-textarea"></textarea>
+      <label for="txta-preview">Input base64 source</label>
+    </div>
+    <button id="btn-preview" class="btn waves-effect waves-light right" type="submit">Preview image</button>
+    <h2>Image preview:</h2>
+    <div id="output-img"></div>
+    <input id="input" type="file" style="display:none">
+    <button id="btn-upload" class="btn waves-effect waves-light right" type="submit">Upload & Convert</button>
+    <h2>Base64 source:</h2>
+    <div id="output-markup" class="output-txt"></div>
+  </div>
+
+
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
+
+  <script>
+    var btn_upload = document.getElementById('btn-upload')
+    var btn_preview = document.getElementById('btn-preview')
+    var input = document.getElementById('input');
+    var output_img = document.getElementById('output-img');
+    var output_markup = document.getElementById('output-markup');
+    var txta_preview = document.getElementById('txta-preview');
+
+    btn_upload.onclick = function () { input.click() }
+    input.onchange = function (evt) { handleUpload(evt.target.files[0]) }
+
+    function previewImage() {
+      renderImage(txta_preview.innerHTML);
+    }
+
+    function handleUpload() {
+      var file = input.files[0];
+      if (file)
+        toDataURL(file, function (base64) {
+          renderImage(base64);
+          renderMarkup(base64);
+        })
+    }
+
+    function renderImage(base64) {
+      var img = document.createElement('img');
+      img.src = base64;
+      output_img.appendChild(img)
+    }
+
+    function renderMarkup(base64) {
+      output_markup.innerHTML = base64;
+    }
+
+    function toDataURL(file, cb) {
+      var reader = new FileReader();
+      reader.onloadend = function () {
+        cb(reader.result);
+      }
+      reader.readAsDataURL(file);
+    }
+  </script>
+
+</body>
+
+</html>
