@@ -57,3 +57,5 @@ typings/
 # dotenv environment variables file
 .env
 
+# credential for OAuth experiment
+credentials.json
