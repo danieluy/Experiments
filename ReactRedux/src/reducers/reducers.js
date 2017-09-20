@@ -1,5 +1,8 @@
 import { combineReducers } from 'redux'
-import users from './users.reducer'
-import selectedUser from './selected-user.reducer'
+import todos from './todos'
+import visibilityFilter from './visibilityFilter'
 
-export default combineReducers({ users, selectedUser })
+export default combineReducers({
+  todos,
+  visibilityFilter
+})

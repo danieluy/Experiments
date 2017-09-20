@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import './App.scss'
 import { debounce } from 'lodash'
-import UsersList from '../containers/UsersList'
-import UserDetails from '../containers/UserDetails'
+
+import Footer from './Footer'
+import AddTodo from '../containers/AddTodo'
+import VisibleTodoList from '../containers/VisibleTodoList'
 
 class App extends Component {
   constructor() {
@@ -29,11 +31,9 @@ class App extends Component {
     return (
       <div className="app-wrapper" style={{ height: this.state.window.height }}>
         <h1>React.js + Redux</h1>
-        <h2>Experiment</h2>
-        <h3>Characters list</h3>
-        <UsersList />
-        <h3>Character details</h3>
-        <UserDetails />
+        <AddTodo />
+        <VisibleTodoList />
+        <Footer />
       </div>
     )
   }
