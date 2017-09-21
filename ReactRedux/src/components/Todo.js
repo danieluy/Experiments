@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const Todo = ({ onClick, completed, text }) => (
+const Todo = ({ onClick, onDelete, completed, text }) => (
   <li
     className="todo-item"
     onClick={onClick}
@@ -9,7 +9,7 @@ const Todo = ({ onClick, completed, text }) => (
       textDecoration: completed ? 'line-through' : 'none'
     }}
   >
-    {text}
+    {text} <span onClick={onDelete} style={{ zIndex: 10 }}>&times;</span>
   </li>
 )
 
